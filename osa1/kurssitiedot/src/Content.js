@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Part from './Part'
+
 class Content extends React.Component {
 
   renderParts() {
@@ -9,9 +11,15 @@ class Content extends React.Component {
   }
 
   render() {
+    const { parts } = this.props
     return (
       <div>
         {this.renderParts()}
+        <br/>
+        <h2>1.2 toteutus</h2>
+        <Part part={parts[0]}/>
+        <Part part={parts[1]}/>
+        <Part part={parts[2]}/>
       </div>
     )
   }
