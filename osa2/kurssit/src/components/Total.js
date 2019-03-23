@@ -1,12 +1,9 @@
 import React from 'react'
 
-const calc = (values) => {
-  let i = 0
-  values.forEach(value => {
-    i+=value.exercises
-  })
-  return i
+const reducer = (acc, cur) => {
+  return acc + cur
 }
-const Total = props => <p>yhteensä {calc(props.parts)} tehtävää</p>
+
+const Total = props => <p>yhteensä {props.parts.map(obj => obj.exercises).reduce(reducer)} tehtävää</p>
 
 export default Total
