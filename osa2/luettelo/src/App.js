@@ -2,17 +2,14 @@ import React, { useState } from 'react'
 
 const App = () => {
   const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Martti Tienari', number: '040-123456' },
+    { name: 'Arto Järvinen', number: '040-123456' },
+    { name: 'Lea Kutvonen', number: '040-123456' }
   ])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-  const [ isListed, setIsListed ] = useState(false)
-
-  const showPersons = () => {
-    return persons.map(person => {
-      return <p key={person.name}>{person.name}{person.number}</p>
-    })
-  }
+  const [ newSearch, setSearch ] = useState('')
 
   const nameChange = (e) => {
     e.preventDefault()
@@ -32,6 +29,7 @@ const App = () => {
     persons.map(person => {
       if(person.name === newName){
         check = true
+        return null
       }
     })
     if(check){
@@ -44,9 +42,31 @@ const App = () => {
     }
   }
 
+  const search = e => {
+    e.preventDefault()
+    setSearch(e.target.value)
+  }
+
+  const showPersons = () => {
+    let filtered = persons
+    if(newSearch){
+      filtered = persons.filter(person => {
+        const mem = person.name.toLowerCase()
+        if(0<=mem.indexOf(newSearch.toLowerCase())){
+          return person
+        }
+        return null
+      })
+    }
+    return filtered.map(person => {
+      return <p key={person.name}>{person.name} {person.number}</p>
+    })
+  }
+
   return (
     <div>
       <h2>Puhelinluettelo</h2>
+      haku: <input onChange={search}/>
       <form onSubmit={addContact}>
         <div>nimi: <input value={newName} onChange={nameChange} /></div>
         <div>numero: <input value={newNumber} onChange={numberChange} /></div>
@@ -54,7 +74,6 @@ const App = () => {
           <button type="submit">lisää</button>
         </div>
       </form>
-      {/* {isListed ? 'Henkilö on jo lisätty' : ''} */}
       <h2>Numerot</h2>
       {showPersons()}
     </div>
