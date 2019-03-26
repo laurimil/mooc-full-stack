@@ -11,12 +11,13 @@ const Country = ({country, show}) => {
   }
 
   return (
-    showThis
-      ? <CountryDetail country={country} />
-      : <p key={country.alpha2Code}>
-          {country.name}
-          <button onClick={toggleShow}>show</button>
-        </p>
+    <div key={country.alpha2Code}>
+      <p>{country.name}<button onClick={toggleShow}>{showThis ? 'hide' : 'show'}</button></p>
+        {showThis
+          ? <CountryDetail country={country} />
+          : <div></div>}
+    </div>
+
   )
 }
 
