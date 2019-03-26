@@ -15,11 +15,12 @@ const Countries = ({countries, search}) => {
     if(filtered.length>10){
       return <p>Too many results</p>
     } else if (filtered.length===1){
-      return <Country country={filtered[0]} />
+      return <Country show={true} country={filtered[0]} />
     } else {
       return filtered.map(country => {
         return (
-          <p key={country.alpha2Code}>{country.name}, {country.alpha3Code}, population: {country.population}</p>
+          <Country key={country.alpha2Code} country={country} show={false} />
+          // <p key={country.alpha2Code}>{country.name}</p>
         )
       })
     }
