@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Weather from './Weather'
+
 const CountryDetail = ({country}) => {
 
   const languages = () => {
@@ -16,6 +18,7 @@ const CountryDetail = ({country}) => {
       <b>languages:</b>
       <ul>{languages()}</ul>
       <img alt='' src={country.flag} style={{height:100, width:100 }} />
+      <Weather capital={country.capital} />
     </div>
   )
 }
