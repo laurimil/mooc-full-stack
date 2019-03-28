@@ -1,7 +1,6 @@
 import React from 'react'
 
-const Persons = ({data}) => {
-  const { persons, newSearch } = data
+const List = ({persons, newSearch, remove}) => {
 
   let filtered = persons
 
@@ -16,7 +15,7 @@ const Persons = ({data}) => {
   }
 
   return filtered.map(person => {
-    return <p key={person.name}>{person.name} {person.number}</p>
+    return <p key={person.id}>{person.name} {person.number}<button onClick={()=>remove(person.id)}>remove</button></p>
   })
 }
-export default Persons
+export default List

@@ -19,6 +19,21 @@
       "name": "Lea Kutvonen",
       "number": "040-123456",
       "id": 4
+    },
+    {
+      "name": "Lauri",
+      "number": "1234",
+      "id": 5
+    },
+    {
+      "name": "Lauri Lehto",
+      "number": "2345",
+      "id": 6
+    },
+    {
+      "name": "Pauliina",
+      "number": "1234",
+      "id": 7
     }
   ]
 }

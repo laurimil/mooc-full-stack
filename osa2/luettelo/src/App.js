@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import Persons from './components/Persons'
-import Filter from './components/Filter'
+import contactService from './services/contacts'
+
+import List from './components/List'
+import Search from './components/Search'
 import Form from './components/Form'
 
-import axios from 'axios'
 
 
 const App = () => {
@@ -14,12 +15,7 @@ const App = () => {
   const [ newSearch, setSearch ] = useState('')
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons').then(response => {
-        console.log(response.data)
-        setPersons(response.data)
-      })
+    contactService.getAll(setPersons)
   }, [])
 
   const nameChange = (e) => {
@@ -37,22 +33,27 @@ const App = () => {
   const addContact = e => {
     e.preventDefault()
     let check = false
-    persons.map(person => {
-      if(person.name === newName){
-        check = true
-        return null
-      }
+    persons.filter(person => {
+      if(person.name === newName){ check = true }
       return null
     })
     if(check){
       alert(`${newName} on jo listalla`)
     } else {
       const newPerson = { name: newName, number: newNumber }
-      const newPersons = persons.concat(newPerson)
+      const contactAdded = contactService.addNew(newPerson, setPersons)
+      contactAdded.then(res => {
+      const newPersons = persons.concat(res)
       setPersons(newPersons)
       setNewName('')
       setNewNumber('')
+      }).catch(err => alert('operation failed'+err))
+
     }
+  }
+
+  const removeContact = id => {
+    contactService.remove(id)
   }
 
   const search = e => {
@@ -63,11 +64,11 @@ const App = () => {
   return (
     <div>
       <h2>Puhelinluettelo</h2>
-      <Filter search={search}/>
+      <Search search={search}/>
       Lisää nimi ja numero
       <Form values={{addContact, newName, newNumber, nameChange, numberChange}}/>
       <h2>Numerot</h2>
-      <Persons data={{persons, newSearch}}/>
+      <List persons={persons} search={newSearch} remove={removeContact} />
     </div>
   )
 

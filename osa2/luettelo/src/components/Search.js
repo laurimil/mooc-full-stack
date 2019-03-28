@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Filter = ({search}) => {
+const Search = ({search}) => {
 
   return <div>haku: <input onChange={search}/></div>
 }
 
-export default Filter
+export default Search

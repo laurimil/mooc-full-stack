@@ -6,7 +6,6 @@ const Country = ({country, show}) => {
   const [ showThis, setShow ] = useState(show)
 
   const toggleShow = () => {
-    console.log('show')
     setShow(!showThis)
   }
 
