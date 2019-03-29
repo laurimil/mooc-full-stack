@@ -14,7 +14,14 @@ const addNew = newPerson => {
 
   return request.then(response => response.data)
 }
+const update = (changed, persons, setPersons) => {
 
+  axios.put(`${baseUrl}/${changed.id}`, changed)
+    .then(res => {
+      const newPersons = persons.map(person => person.id !== changed.id ? person : res.data)
+      setPersons(newPersons)
+    })
+}
 const remove = (id, persons, setPersons ) => {
   axios.delete(`${baseUrl}/${id}`)
   .then(res => {
@@ -23,4 +30,4 @@ const remove = (id, persons, setPersons ) => {
   }).catch(e => alert(e))
 }
 
-export default { addNew, getAll, remove }
+export default { addNew, getAll, update, remove }

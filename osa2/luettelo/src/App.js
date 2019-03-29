@@ -6,8 +6,6 @@ import List from './components/List'
 import Search from './components/Search'
 import Form from './components/Form'
 
-
-
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
@@ -32,24 +30,27 @@ const App = () => {
 
   const addContact = e => {
     e.preventDefault()
-    let check = false
-    persons.filter(person => {
-      if(person.name === newName){ check = true }
+
+    if(!newNumber) {
+      alert('Et antanut numeroa')
       return null
-    })
-    if(check){
-      alert(`${newName} on jo listalla`)
-    } else {
-      const newPerson = { name: newName, number: newNumber }
-      const contactAdded = contactService.addNew(newPerson, setPersons)
-      contactAdded.then(res => {
+    }
+    const newPerson = { name: newName, number: newNumber }
+
+    const found = persons.find(person => person.name === newName)
+    if(found){
+      const changed = { ...found, number: newNumber }
+      contactService.update(changed, persons, setPersons)
+      reset()
+      return null
+    }
+
+    const contactAdded = contactService.addNew(newPerson, setPersons)
+    contactAdded.then(res => {
       const newPersons = persons.concat(res)
       setPersons(newPersons)
-      setNewName('')
-      setNewNumber('')
-      }).catch(err => alert('operation failed'+err))
-
-    }
+      reset()
+    }).catch(err => alert('operation failed'+err))
   }
 
   const removeContact = id => {
@@ -59,6 +60,11 @@ const App = () => {
   const search = e => {
     e.preventDefault()
     setSearch(e.target.value)
+  }
+
+  const reset = () => {
+    setNewName('')
+    setNewNumber('')
   }
 
   return (
