@@ -38,8 +38,10 @@ const App = () => {
     const newPerson = { name: newName, number: newNumber }
 
     const found = persons.find(person => person.name === newName)
+
     if(found){
       const changed = { ...found, number: newNumber }
+      //alert()
       contactService.update(changed, persons, setPersons)
       reset()
       return null
