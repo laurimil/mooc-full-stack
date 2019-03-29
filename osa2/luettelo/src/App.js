@@ -53,7 +53,7 @@ const App = () => {
   }
 
   const removeContact = id => {
-    contactService.remove(id)
+    contactService.remove(id, persons, setPersons)
   }
 
   const search = e => {

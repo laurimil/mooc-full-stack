@@ -15,7 +15,7 @@ const List = ({persons, newSearch, remove}) => {
   }
 
   return filtered.map(person => {
-    return <p key={person.id}>{person.name} {person.number}<button onClick={()=>remove(person.id)}>remove</button></p>
+    return <p key={person.id}>{person.name} {person.number}<button onClick={()=>remove(person.id)}>poista</button></p>
   })
 }
 export default List
