@@ -39,7 +39,12 @@ const App = () => {
 
     const found = persons.find(person => person.name === newName)
 
-    if(found){
+    let check
+    if(found) {
+      check = window.confirm('Henkilö löytyy listalta, haluatko päivittää numeron?')
+
+    }
+    if(check){
       const changed = { ...found, number: newNumber }
       //alert()
       contactService.update(changed, persons, setPersons)
