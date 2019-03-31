@@ -14,19 +14,22 @@ const addNew = newPerson => {
 
   return request.then(response => response.data)
 }
-const update = (changed, persons, setPersons) => {
 
-  axios.put(`${baseUrl}/${changed.id}`, changed)
-    .then(res => {
+const update = (changed, persons, setPersons) => {
+  const request = axios.put(`${baseUrl}/${changed.id}`, changed)
+  return request.then(res => {
       const newPersons = persons.map(person => person.id !== changed.id ? person : res.data)
       setPersons(newPersons)
+      return res.data
     })
 }
+
 const remove = (id, persons, setPersons ) => {
-  axios.delete(`${baseUrl}/${id}`)
-  .then(res => {
+  const request = axios.delete(`${baseUrl}/${id}`)
+  return request.then(res => {
     const newPersons = persons.filter(person => person.id !== id ? person : null)
     setPersons(newPersons)
+    return null
   }).catch(e => alert(e))
 }
 

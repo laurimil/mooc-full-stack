@@ -5,16 +5,37 @@ import contactService from './services/contacts'
 import List from './components/List'
 import Search from './components/Search'
 import Form from './components/Form'
+import Notification from './components/Notification'
+import './styles.css'
 
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setSearch ] = useState('')
+  const [ statusMessage, setStatusMessage ] = useState('')
 
   useEffect(() => {
     contactService.getAll(setPersons)
   }, [])
+
+  const setStatus = ( name, status ) => {
+    console.log(name, status)
+    switch (status) {
+      case 'new':
+        setStatusMessage(`Yhteystietoihin lisätty ${name}`)
+        break;
+      case 'update':
+        setStatusMessage(`Yhteystietoihin päivitetty ${name}`)
+        break;
+      case 'remove':
+        setStatusMessage(`Yhteystiedoista poistettu ${name}`)
+        break;
+      default:
+        setStatusMessage('Default')
+    }
+    setTimeout(()=> {setStatusMessage('')}, 3000)
+  }
 
   const nameChange = (e) => {
     e.preventDefault()
@@ -42,13 +63,14 @@ const App = () => {
     let check
     if(found) {
       check = window.confirm('Henkilö löytyy listalta, haluatko päivittää numeron?')
-
     }
     if(check){
       const changed = { ...found, number: newNumber }
-      //alert()
       contactService.update(changed, persons, setPersons)
-      reset()
+        .then(res => {
+          setStatus(res.name, 'update')
+          reset()
+        })
       return null
     }
 
@@ -56,12 +78,17 @@ const App = () => {
     contactAdded.then(res => {
       const newPersons = persons.concat(res)
       setPersons(newPersons)
+      setStatus(newPerson.name, 'new')
       reset()
     }).catch(err => alert('operation failed'+err))
   }
 
   const removeContact = id => {
     contactService.remove(id, persons, setPersons)
+      .then(res => {
+        const person = persons.find(person => person.id === id )
+        setStatus(person.name, 'remove')
+      })
   }
 
   const search = e => {
@@ -78,13 +105,15 @@ const App = () => {
     <div>
       <h2>Puhelinluettelo</h2>
       <Search search={search}/>
+      {statusMessage ?
+      <Notification message={statusMessage} />
+      : <div></div> }
       Lisää nimi ja numero
       <Form values={{addContact, newName, newNumber, nameChange, numberChange}}/>
       <h2>Numerot</h2>
       <List persons={persons} search={newSearch} remove={removeContact} />
     </div>
   )
-
 }
 
 export default App
